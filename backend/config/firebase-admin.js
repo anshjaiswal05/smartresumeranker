@@ -145,17 +145,26 @@ try {
   let privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
   if (projectId && clientEmail && privateKey) {
+    // Strip surrounding quotes if added during copy-paste in Vercel UI
+    privateKey = privateKey.trim();
+    if ((privateKey.startsWith('"') && privateKey.endsWith('"')) || (privateKey.startsWith("'") && privateKey.endsWith("'"))) {
+      privateKey = privateKey.slice(1, -1);
+    }
     if (privateKey.includes('\\n')) {
       privateKey = privateKey.replace(/\\n/g, '\n');
     }
 
-    firebaseApp = admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId,
-        clientEmail,
-        privateKey
-      })
-    });
+    if (!admin.apps.length) {
+      firebaseApp = admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId,
+          clientEmail,
+          privateKey
+        })
+      });
+    } else {
+      firebaseApp = admin.app();
+    }
     firestoreDb = admin.firestore();
     firestoreDb.settings({ ignoreUndefinedProperties: true });
     isFirebaseConfigured = true;

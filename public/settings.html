@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Application Settings</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Appearance Settings Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">🎨 Appearance & Display Theme</h3>
+          </div>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:18px;">
+            Choose your preferred interface theme. Settings are automatically saved to your local browser environment.
+          </p>
+
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <button id="btn-set-light-theme" class="btn btn-secondary" style="padding:14px 24px;">
+              ☀️ Activate Light Mode
+            </button>
+            <button id="btn-set-dark-theme" class="btn btn-secondary" style="padding:14px 24px;">
+              🌙 Activate Dark Mode
+            </button>
+          </div>
+        </div>
+
+        <!-- Privacy & Storage Disclaimer Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">🔒 Privacy & Storage Architecture</h3>
+          </div>
+          <div style="font-size:14px;color:var(--text-secondary);line-height:1.7;">
+            <p style="margin-bottom:10px;">
+              <strong>Zero File Retention:</strong> Smart Resume Ranker adheres strictly to a zero-retention policy for uploaded original documents. Your uploaded PDF, DOC, and DOCX files are temporarily held in server memory for text extraction and scoring, then immediately deleted.
+            </p>
+            <p>
+              Only structured metrics (ATS scores, detected skill names, and generated interview history) are stored in Firestore to power your dashboard.
+            </p>
+          </div>
+        </div>
+
+        <!-- Session & Logout Card -->
+        <div class="card" style="border-left:4px solid var(--accent-danger);">
+          <div class="card-header">
+            <h3 class="card-title" style="color:var(--accent-danger);">🚪 Account Session</h3>
+          </div>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;">
+            Sign out of your active Smart Resume Ranker account on this device.
+          </p>
+          <button id="btn-settings-logout" class="btn btn-danger btn-logout">
+            Sign Out of Account
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btn-set-light-theme').addEventListener('click', () => {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('srr_theme_preference', 'light');
+        showToast('Light mode activated', 'info');
+      });
+
+      document.getElementById('btn-set-dark-theme').addEventListener('click', () => {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('srr_theme_preference', 'dark');
+        showToast('Dark mode activated', 'info');
+      });
+
+      document.getElementById('btn-settings-logout').addEventListener('click', handleLogout);
+    });
+  </script>
+</body>
+</html>

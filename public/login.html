@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+</head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(circle at 50% 30%, rgba(37,99,235,0.08), transparent 70%);">
+  <div style="width:100%;max-width:440px;padding:24px;">
+    <div class="card" style="padding:36px;text-align:center;">
+      <a href="index.html" class="brand-logo" style="justify-content:center;margin-bottom:20px;text-decoration:none;">
+        <div class="brand-icon">SR</div>
+        <span class="brand-name" style="color:var(--text-primary);font-size:18px;">SMART RESUME RANKER</span>
+      </a>
+
+      <h1 style="font-size:22px;margin-bottom:8px;">Sign In to Your Account</h1>
+      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:28px;">
+        Access your ATS scores, career dashboard, and AI mock interviews in one click.
+      </p>
+
+      <div id="auth-alert" style="display:none;padding:12px;border-radius:6px;font-size:13px;margin-bottom:20px;text-align:left;background:var(--accent-danger-light);color:var(--accent-danger);border:1px solid var(--accent-danger);"></div>
+
+      <button id="btn-google-auth" class="btn btn-primary btn-lg" style="width:100%;margin-bottom:20px;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:20px;height:20px;margin-right:10px;vertical-align:middle;">
+        Continue with Google
+      </button>
+
+      <div style="font-size:12px;color:var(--text-muted);border-top:1px solid var(--border-color);padding-top:18px;line-height:1.5;">
+        ⚡ <strong>Auto-detect account:</strong> New users are guided to quick profile setup; existing users go directly to dashboard.
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+/* Responsive Breakpoints & Mobile Navigation Drawer */
+
+/* Tablet & Mobile Breakpoint (Max 1024px) */
+@media (max-width: 1024px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+}
+
+/* Mobile Phones (Max 768px) */
+@media (max-width: 768px) {
+  .content-body {
+    padding: 20px 16px;
+  }
+
+  .topbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .topbar-page-title {
+    font-size: 16px;
+  }
+
+  .grid-cols-4,
+  .grid-cols-3,
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btn-lg {
+    width: 100%;
+    padding: 12px 18px;
+  }
+
+  .score-circle-wrapper {
+    padding: 12px;
+  }
+
+  .score-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .score-number {
+    font-size: 36px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .upload-zone {
+    padding: 32px 16px;
+  }
+
+  /* Prevent horizontal scrolling on tables & code */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Resume Builder responsive layout */
+  .builder-layout {
+    flex-direction: column !important;
+  }
+
+  .builder-editor-pane,
+  .builder-preview-pane {
+    width: 100% !important;
+  }
+
+  .resume-paper {
+    transform-origin: top center;
+    max-width: 100% !important;
+  }
+
+  /* Landing page responsive */
+  .hero-section {
+    padding: 48px 16px !important;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 28px !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero-subtitle {
+    font-size: 15px !important;
+  }
+
+  .hero-actions {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Small phones (Max 480px) */
+@media (max-width: 480px) {
+  .topbar-right .btn-theme-toggle span.toggle-text {
+    display: none;
+  }
+
+  .stat-header {
+    margin-bottom: 8px;
+  }
+
+  .toast {
+    min-width: calc(100vw - 32px);
+    right: 16px;
+  }
+}

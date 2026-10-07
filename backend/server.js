@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { errorHandler } = require('./middleware/errorMiddleware');
 
 // Import routes
@@ -54,7 +55,9 @@ app.use('/api', jobRoutes);
 app.use('/api', dashboardRoutes);
 
 // Serve Frontend Static Files
-const frontendPath = path.join(__dirname, '../frontend');
+const publicPath = path.join(__dirname, '../public');
+const fallbackFrontendPath = path.join(__dirname, '../frontend');
+const frontendPath = fs.existsSync(publicPath) ? publicPath : fallbackFrontendPath;
 app.use(express.static(frontendPath));
 
 // Fallback route for SPA / direct HTML navigation
@@ -65,7 +68,11 @@ app.get('*', (req, res, next) => {
   const filePath = path.join(frontendPath, req.path.endsWith('.html') ? req.path : `${req.path}.html`);
   res.sendFile(filePath, (err) => {
     if (err) {
-      res.sendFile(path.join(frontendPath, 'index.html'));
+      res.sendFile(path.join(frontendPath, 'index.html'), (err2) => {
+        if (err2) {
+          res.status(200).send('Smart Resume Ranker API is online.');
+        }
+      });
     }
   });
 });
@@ -73,8 +80,8 @@ app.get('*', (req, res, next) => {
 // Centralized error handling
 app.use(errorHandler);
 
-// Start server (when running locally or on traditional VM)
-if (!process.env.VERCEL) {
+// Start server (when running directly with `node server.js` locally)
+if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`====================================================`);
     console.log(`🚀 Smart Resume Ranker Server running on port ${PORT}`);

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Profile & Resume Overview</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Profile Banner -->
+        <div class="card" style="padding:28px;margin-bottom:28px;">
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <div id="profile-avatar-circle" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg, #2563eb, #7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;">
+              SR
+            </div>
+            <div>
+              <h1 id="disp-profile-name" style="font-size:24px;margin-bottom:4px;">User Profile</h1>
+              <div id="disp-profile-designation" style="font-size:15px;color:var(--accent-primary);font-weight:600;">Software Professional</div>
+              <div id="disp-profile-email" style="font-size:13px;color:var(--text-muted);">user@example.com</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editable Personal Information Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">👤 Personal Details & Online Profiles</h3>
+          </div>
+
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="profile-name">Full Name</label>
+              <input type="text" id="profile-name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-email">Email Address</label>
+              <input type="email" id="profile-email" class="form-control" disabled style="opacity:0.7;">
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">Phone Number</label>
+              <input type="tel" id="profile-phone" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-designation">Designation</label>
+              <input type="text" id="profile-designation" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="profile-address">Address / City</label>
+            <input type="text" id="profile-address" class="form-control">
+          </div>
+
+          <div class="grid-cols-3">
+            <div class="form-group">
+              <label class="form-label" for="profile-github">GitHub Profile URL</label>
+              <input type="url" id="profile-github" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-linkedin">LinkedIn Profile URL</label>
+              <input type="url" id="profile-linkedin" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-portfolio">Portfolio / Website URL</label>
+              <input type="url" id="profile-portfolio" class="form-control">
+            </div>
+          </div>
+
+          <div style="text-align:right;margin-top:10px;">
+            <button id="btn-save-profile" class="btn btn-primary">
+              💾 Save Profile Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Structured Resume Information Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <h3 class="card-title">📄 Latest Structured Resume Intelligence</h3>
+              <span id="profile-ats-badge" class="badge badge-primary">ATS Score Available</span>
+            </div>
+            <a href="resume.html" class="btn btn-sm btn-outline">Upload New Resume ➔</a>
+          </div>
+
+          <div id="profile-resume-details">
+            <div style="margin-bottom:18px;">
+              <h4 style="font-size:13px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Summary:</h4>
+              <p id="profile-resume-summary" style="font-size:14px;color:var(--text-secondary);line-height:1.6;"></p>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <h4 style="font-size:13px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Extracted Technical Skills:</h4>
+              <div id="profile-extracted-skills"></div>
+            </div>
+
+            <div>
+              <h4 style="font-size:13px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">AI Recommendations:</h4>
+              <ul id="profile-recommendations-list" style="padding-left:20px;font-size:13px;color:var(--text-secondary);line-height:1.7;"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Mock Interview — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">AI Mock Interview</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- 1. Setup Configuration Card -->
+        <div id="interview-setup-card" class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">🎙️ Technical Interview Simulator</h3>
+            <span class="badge badge-primary">Unique Non-Repeating Questions</span>
+          </div>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:24px;">
+            Practice real technical interview questions. Our engine guarantees that each session presents fresh questions by tracking your history and excluding recently seen topics.
+          </p>
+
+          <div class="grid-cols-3" style="margin-bottom:24px;">
+            <div class="form-group">
+              <label class="form-label" for="select-interview-role">Target Role:</label>
+              <select id="select-interview-role" class="form-control">
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="Backend Developer">Backend Developer</option>
+                <option value="Full Stack Developer">Full Stack Developer</option>
+                <option value="Software Engineer">Software Engineer</option>
+                <option value="DevOps Engineer">DevOps & SRE</option>
+                <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                <option value="Data Scientist">Data Scientist</option>
+                <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="select-interview-difficulty">Difficulty Level:</label>
+              <select id="select-interview-difficulty" class="form-control">
+                <option value="Easy">Easy (Core syntax & definitions)</option>
+                <option value="Medium" selected>Medium (Architecture, edge cases & internals)</option>
+                <option value="Hard">Hard (Scale, distributed systems & optimizations)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="select-question-count">Number of Questions:</label>
+              <select id="select-question-count" class="form-control">
+                <option value="10" selected>10 Questions (~15 mins)</option>
+                <option value="15">15 Questions (~25 mins)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="text-align:right;">
+            <button id="btn-start-interview" class="btn btn-primary btn-lg">
+              🚀 Start AI Mock Interview
+            </button>
+          </div>
+
+          <!-- History Preview -->
+          <div style="margin-top:32px;border-top:1px solid var(--border-color);padding-top:20px;">
+            <h4 style="font-size:15px;margin-bottom:12px;">Your Past Mock Interview History</h4>
+            <div id="interview-history-list"></div>
+          </div>
+        </div>
+
+        <!-- 2. Active Interview Card (Hidden Initially) -->
+        <div id="interview-active-card" class="card" style="display:none;padding:32px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <span id="interview-progress-text" style="font-size:14px;font-weight:700;color:var(--text-muted);">Question 1 of 10</span>
+              <span id="interview-question-topic" class="badge badge-primary" style="margin-left:10px;">Topic</span>
+            </div>
+            <div style="width:200px;height:8px;background:var(--bg-tertiary);border-radius:4px;overflow:hidden;">
+              <div id="interview-stepper-bar" style="height:100%;width:10%;background:var(--accent-primary);transition:width 0.2s ease;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:24px;">
+            <h2 id="interview-question-text" style="font-size:20px;line-height:1.4;margin-bottom:16px;">Question text here...</h2>
+          </div>
+
+          <div class="form-group" style="margin-bottom:24px;">
+            <label class="form-label" for="textarea-user-answer">Your Technical Explanation / Answer:</label>
+            <textarea id="textarea-user-answer" class="form-control" style="min-height:160px;font-size:14px;" placeholder="Type your detailed explanation here. Be specific about mechanisms, trade-offs, and best practices..."></textarea>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <button id="btn-prev-question" class="btn btn-secondary" disabled>← Previous Question</button>
+            <div style="display:flex;gap:12px;">
+              <button id="btn-next-question" class="btn btn-primary">Next Question →</button>
+              <button id="btn-submit-interview" class="btn btn-success btn-lg" style="display:none;">🏁 Finish & Evaluate Interview</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Results Card (Hidden Initially) -->
+        <div id="interview-results-card" style="display:none;">
+          <div class="card" style="padding:32px;margin-bottom:24px;">
+            <div class="grid-cols-2" style="align-items:center;">
+              <div class="score-circle-wrapper">
+                <div class="score-circle" style="border-color:var(--accent-success);">
+                  <div class="score-number" id="result-overall-score">0%</div>
+                  <div class="score-out-of">Overall Score</div>
+                </div>
+              </div>
+              <div>
+                <span class="badge badge-success" style="margin-bottom:8px;">Assessment Completed</span>
+                <h2 id="result-interview-role" style="font-size:22px;margin-bottom:8px;">Role (Medium)</h2>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.8;">
+                  <div>Correct / Proficient Answers: <strong id="result-correct-count" style="color:var(--accent-success);">0</strong></div>
+                </div>
+                <button id="btn-retake-interview" class="btn btn-outline" style="margin-top:16px;">🔄 Take Another Mock Interview</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Topic Performance Breakdown -->
+          <div class="card" style="margin-bottom:24px;">
+            <div class="card-header">
+              <h3 class="card-title">📊 Topic-wise Performance</h3>
+            </div>
+            <div id="result-topic-breakdown"></div>
+          </div>
+
+          <!-- Strengths & Weaknesses -->
+          <div class="grid-cols-2" style="margin-bottom:24px;">
+            <div class="card" style="border-left:4px solid var(--accent-success);">
+              <div class="card-header">
+                <h3 class="card-title" style="color:var(--accent-success);">✓ Strengths Observed</h3>
+              </div>
+              <ul id="result-interview-strengths" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.7;"></ul>
+            </div>
+
+            <div class="card" style="border-left:4px solid var(--accent-danger);">
+              <div class="card-header">
+                <h3 class="card-title" style="color:var(--accent-danger);">⚠️ Areas for Improvement</h3>
+              </div>
+              <ul id="result-interview-weaknesses" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.7;"></ul>
+            </div>
+          </div>
+
+          <!-- Detailed Question by Question Feedback -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">📝 Question by Question Review & Feedback</h3>
+            </div>
+            <div id="result-detailed-breakdown"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/mock-interview.js"></script>
+</body>
+</html>
