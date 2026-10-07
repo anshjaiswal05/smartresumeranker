@@ -1,21 +1,27 @@
 const admin = require('firebase-admin');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 let firebaseApp = null;
 let firestoreDb = null;
 let isFirebaseConfigured = false;
 
-// In-memory / file-backed fallback storage for local development when Firebase Admin credentials are not yet supplied
-const fallbackStoragePath = path.join(__dirname, '../data');
-if (!fs.existsSync(fallbackStoragePath)) {
-  fs.mkdirSync(fallbackStoragePath, { recursive: true });
+// In-memory / temp-backed fallback storage for local development preview
+const fallbackStoragePath = path.join(os.tmpdir(), 'srr_data');
+try {
+  if (!fs.existsSync(fallbackStoragePath)) {
+    fs.mkdirSync(fallbackStoragePath, { recursive: true });
+  }
+} catch (e) {
+  // Gracefully ignore filesystem permissions on read-only serverless platforms like Vercel
 }
 
 class FallbackCollection {
   constructor(collectionName) {
     this.name = collectionName;
     this.filePath = path.join(fallbackStoragePath, `${collectionName}.json`);
+    this.data = {};
     this._load();
   }
 
@@ -36,7 +42,7 @@ class FallbackCollection {
     try {
       fs.writeFileSync(this.filePath, JSON.stringify(this.data, null, 2), 'utf8');
     } catch (e) {
-      console.error(`Error saving fallback collection ${this.name}:`, e.message);
+      // Ignore write errors on read-only environments
     }
   }
 
