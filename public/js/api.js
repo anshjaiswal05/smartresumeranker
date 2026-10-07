@@ -1,6 +1,6 @@
 // Smart Resume Ranker - Central API Helper
-// If you host backend separately on Vercel while keeping frontend on Firebase Hosting, put your Vercel URL here:
-const EXTERNAL_BACKEND_API_URL = ''; // e.g. 'https://your-app-name.vercel.app/api'
+// Connect Firebase Hosting directly to Vercel live backend:
+const EXTERNAL_BACKEND_API_URL = 'https://smartresumeranker.vercel.app/api';
 
 let computedApiBase = '/api';
 if (typeof window !== 'undefined' && window.location) {
