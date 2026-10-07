@@ -1,0 +1,10 @@
+.env
+**/.env
+node_modules/
+**/node_modules/
+temp_uploads/
+**/temp_uploads/
+.DS_Store
+*.log
+backend/data/*.json
+.firebase/

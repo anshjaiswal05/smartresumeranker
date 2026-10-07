@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Career Dashboard</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+          <a href="profile.html" class="btn btn-sm btn-outline">My Profile</a>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <div class="content-body">
+        <!-- Quick Action Row -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">⚡ Quick Actions</h3>
+            <span style="font-size:13px;color:var(--text-muted);">Jump directly into career acceleration tools</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <a href="resume.html" class="btn btn-primary">📄 Analyze Resume</a>
+            <a href="resume-builder.html" class="btn btn-secondary">🛠️ Build Resume</a>
+            <a href="skill-gap.html" class="btn btn-secondary">🎯 Analyze Skill Gap</a>
+            <a href="cover-letter.html" class="btn btn-secondary">✉️ Generate Cover Letter</a>
+            <a href="mock-interview.html" class="btn btn-secondary">🎙️ Start Mock Interview</a>
+            <a href="job-explorer.html" class="btn btn-secondary">💼 Explore Jobs</a>
+          </div>
+        </div>
+
+        <!-- Overview Cards Grid -->
+        <div class="grid-cols-4" style="margin-bottom:28px;">
+          <!-- Card 1: ATS Score -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">ATS Score</span>
+              <div class="stat-icon-wrapper">🎯</div>
+            </div>
+            <div class="stat-value" id="stat-ats-score">-- / 100</div>
+            <div class="stat-subtext">Deterministic & AI Score</div>
+          </div>
+
+          <!-- Card 2: Profile Completion -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Profile Completion</span>
+              <div class="stat-icon-wrapper">👤</div>
+            </div>
+            <div class="stat-value" id="stat-profile-comp">--%</div>
+            <div class="stat-subtext">Personal & Social Links</div>
+          </div>
+
+          <!-- Card 3: Skills Detected -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Skills Detected</span>
+              <div class="stat-icon-wrapper">💡</div>
+            </div>
+            <div class="stat-value" id="stat-skills-detected">0</div>
+            <div class="stat-subtext">Extracted from Resume</div>
+          </div>
+
+          <!-- Card 4: Missing Skills -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Missing Skills</span>
+              <div class="stat-icon-wrapper" style="background:var(--accent-danger-light);color:var(--accent-danger);">⚠️</div>
+            </div>
+            <div class="stat-value" id="stat-missing-skills">0</div>
+            <div class="stat-subtext">Target Gap Gaps</div>
+          </div>
+        </div>
+
+        <div class="grid-cols-3" style="margin-bottom:28px;">
+          <!-- Card 5: Target Role -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Target Role</span>
+              <div class="stat-icon-wrapper">💼</div>
+            </div>
+            <div class="stat-value" style="font-size:20px;" id="stat-target-job">Software Engineer</div>
+            <div class="stat-subtext">Active Target Benchmark</div>
+          </div>
+
+          <!-- Card 6: Saved Jobs -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Saved Jobs</span>
+              <div class="stat-icon-wrapper">🔖</div>
+            </div>
+            <div class="stat-value" id="stat-saved-jobs">0</div>
+            <div class="stat-subtext">Bookmarked in India</div>
+          </div>
+
+          <!-- Card 7: Mock Interview Score -->
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label">Latest Mock Score</span>
+              <div class="stat-icon-wrapper">🎙️</div>
+            </div>
+            <div class="stat-value" id="stat-mock-score">Not Taken</div>
+            <div class="stat-subtext">Technical Assessment</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Section -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">🕒 Recent Activity</h3>
+            <span style="font-size:13px;color:var(--text-muted);">Real-time action history</span>
+          </div>
+          <ul class="activity-list" id="recent-activity-list">
+            <li class="activity-item">
+              <div class="activity-icon">⏳</div>
+              <div class="activity-content">
+                <div class="activity-title">Loading activity stream...</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

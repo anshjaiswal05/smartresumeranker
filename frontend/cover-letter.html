@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cover Letter Generator — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">AI Cover Letter Generator</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">✉️ Generate Tailored Cover Letter</h3>
+            <span class="badge badge-success">🔒 Zero Hallucinations &bull; Powered by Gemini</span>
+          </div>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;">
+            Smart Resume Ranker automatically utilizes your verified resume skills and background so that only real achievements and qualifications are referenced.
+          </p>
+
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="input-job-title">Job Title / Target Position <span class="required">*</span></label>
+              <input type="text" id="input-job-title" class="form-control" placeholder="e.g. Senior Frontend Engineer" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-company-name">Target Company <span class="required">*</span></label>
+              <input type="text" id="input-company-name" class="form-control" placeholder="e.g. Razorpay, Swiggy, Google" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="select-letter-tone">Letter Tone</label>
+            <select id="select-letter-tone" class="form-control" style="max-width:320px;">
+              <option value="Professional" selected>Professional (Balanced, polished & respectful)</option>
+              <option value="Confident">Confident (Bold, results & impact oriented)</option>
+              <option value="Friendly">Friendly (Warm, collaborative & approachable)</option>
+              <option value="Concise">Concise (Direct, fast to scan & compact)</option>
+              <option value="Enthusiastic">Enthusiastic (Energetic & passion-driven)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="textarea-job-desc">Job Description / Requirements (Paste full text):</label>
+            <textarea id="textarea-job-desc" class="form-control" style="min-height:140px;" placeholder="Paste the target job description or requirements here to enable precise semantic alignment..."></textarea>
+          </div>
+
+          <div style="text-align:right;">
+            <button id="btn-generate-letter" class="btn btn-primary btn-lg">
+              ✨ Generate Tailored Cover Letter
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Card (Hidden until generated) -->
+        <div id="letter-output-card" class="card" style="display:none;padding:28px;">
+          <div class="card-header">
+            <h3 class="card-title">📄 Your Tailored Cover Letter</h3>
+            <div style="display:flex;gap:10px;">
+              <button id="btn-copy-letter" class="btn btn-sm btn-outline">📋 Copy to Clipboard</button>
+              <button id="btn-download-letter" class="btn btn-sm btn-secondary">💾 Download as Text</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <textarea id="textarea-output-letter" class="form-control" style="min-height:380px;font-family:inherit;font-size:14px;line-height:1.6;"></textarea>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text-muted);">You can freely edit the text above before copying or exporting.</span>
+            <button onclick="document.getElementById('btn-generate-letter').click()" class="btn btn-sm btn-outline">
+              🔄 Regenerate
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/cover-letter.js"></script>
+</body>
+</html>

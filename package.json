@@ -1,0 +1,20 @@
+{
+  "name": "smart-resume-ranker",
+  "version": "1.0.0",
+  "description": "Smart Resume Ranker Full-Stack AI Platform",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^12.7.0",
+    "mammoth": "^1.8.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1"
+  }
+}

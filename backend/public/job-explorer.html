@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Explorer — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .job-nav-tab {
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+    .job-nav-tab.active {
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Job Explorer — India Tech Roles</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Filter Controls Card -->
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <button id="tab-all-jobs" class="job-nav-tab active">All Tech Listings</button>
+              <button id="tab-saved-jobs" class="job-nav-tab">🔖 Saved Jobs</button>
+            </div>
+            <span class="badge badge-success">Verified Active Positions</span>
+          </div>
+
+          <div class="grid-cols-4" style="margin-bottom:16px;">
+            <div>
+              <label class="form-label" for="input-job-search">Search Keyword / Role:</label>
+              <input type="text" id="input-job-search" class="form-control" placeholder="e.g. Frontend, React, Python">
+            </div>
+
+            <div>
+              <label class="form-label" for="select-job-location">Location / Hub:</label>
+              <select id="select-job-location" class="form-control">
+                <option value="">All Indian Hubs</option>
+                <option value="Bengaluru">Bengaluru, Karnataka</option>
+                <option value="Hyderabad">Hyderabad, Telangana</option>
+                <option value="Gurgaon">Gurgaon, Haryana</option>
+                <option value="Pune">Pune, Maharashtra</option>
+                <option value="Chennai">Chennai, Tamil Nadu</option>
+                <option value="Remote">Remote, India</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" for="select-workplace-type">Workplace Type:</label>
+              <select id="select-workplace-type" class="form-control">
+                <option value="All">All Types</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="On-site">On-site</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" for="select-job-sort">Sort By:</label>
+              <select id="select-job-sort" class="form-control">
+                <option value="latest">Latest First</option>
+                <option value="salary">Highest Salary</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="text-align:right;">
+            <button id="btn-apply-filters" class="btn btn-primary">
+              🔍 Filter Opportunities
+            </button>
+          </div>
+        </div>
+
+        <!-- Jobs Listing Container -->
+        <div id="jobs-results-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/jobs.js"></script>
+</body>
+</html>

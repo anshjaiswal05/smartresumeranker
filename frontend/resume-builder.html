@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    /* Builder Specific Layout & Template Styling */
+    .builder-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .builder-editor-pane {
+      flex: 1;
+      min-width: 0;
+    }
+    .builder-preview-pane {
+      width: 520px;
+      position: sticky;
+      top: 88px;
+    }
+    .resume-sheet {
+      background: #ffffff;
+      color: #111827;
+      padding: 36px 32px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 720px;
+    }
+    .resume-name { font-size: 24px; font-weight: 800; color: #111827; margin-bottom: 2px; }
+    .resume-designation { font-size: 14px; font-weight: 600; color: #2563eb; margin-bottom: 8px; }
+    .resume-contacts { font-size: 12px; color: #4b5563; margin-bottom: 16px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; }
+    .section-heading { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1.5px solid #2563eb; color: #1e3a8a; margin: 14px 0 8px; padding-bottom: 2px; }
+    .resume-item { margin-bottom: 10px; }
+    .item-header { display: flex; justify-content: space-between; font-weight: 700; color: #111827; }
+    .item-subheader { display: flex; justify-content: space-between; font-size: 12px; color: #4b5563; margin-bottom: 4px; }
+    .item-desc { font-size: 12px; color: #374151; line-height: 1.4; }
+    .res-skill-pill { display: inline-block; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 4px; padding: 2px 7px; font-size: 11px; margin: 2px; font-weight: 500; }
+
+    /* Template Variations */
+    .template-minimal .section-heading { border-bottom: 1px solid #9ca3af; color: #111827; }
+    .template-minimal .resume-designation { color: #4b5563; }
+    .template-professional .resume-header { text-align: center; }
+    .template-professional .section-heading { border-bottom: 2px solid #0f172a; color: #0f172a; text-align: center; }
+    .template-software-engineer .section-heading { color: #0284c7; border-color: #0284c7; }
+    .template-fresher .section-heading { color: #059669; border-color: #059669; }
+    .template-ats-friendly { font-family: "Courier New", Courier, monospace; }
+    .template-ats-friendly .section-heading { border-bottom: 1px solid #000; color: #000; text-transform: uppercase; }
+
+    .template-choice-btn.active {
+      border-color: var(--accent-primary);
+      background-color: var(--accent-primary-light);
+      color: var(--accent-primary);
+      font-weight: 700;
+    }
+    .dynamic-entry-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #resume-preview-document, #resume-preview-document * { visibility: visible; }
+      #resume-preview-document {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Resume Builder</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+          <button id="btn-save-resume" class="btn btn-secondary">💾 Save Resume</button>
+          <button id="btn-download-pdf" class="btn btn-primary">🖨️ Export / Print PDF</button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Template Selection Bar -->
+        <div class="card" style="margin-bottom:20px;padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <strong style="font-size:14px;">Select Resume Template:</strong>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-sm btn-outline template-choice-btn active" data-template="modern">Modern</button>
+              <button class="btn btn-sm btn-outline template-choice-btn" data-template="professional">Professional</button>
+              <button class="btn btn-sm btn-outline template-choice-btn" data-template="minimal">Minimal</button>
+              <button class="btn btn-sm btn-outline template-choice-btn" data-template="software-engineer">Software Engineer</button>
+              <button class="btn btn-sm btn-outline template-choice-btn" data-template="fresher">Fresher</button>
+              <button class="btn btn-sm btn-outline template-choice-btn" data-template="ats-friendly">ATS Friendly</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="builder-layout">
+          <!-- Editor Pane -->
+          <div class="builder-editor-pane">
+            <!-- Personal Info Section -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">👤 Personal Details</h3>
+              </div>
+              <div class="grid-cols-2">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" id="input-name" class="form-control" placeholder="Alex Developer">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Designation / Headline</label>
+                  <input type="text" id="input-designation" class="form-control" placeholder="Senior Full Stack Engineer">
+                </div>
+              </div>
+              <div class="grid-cols-2">
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="input-email" class="form-control" placeholder="alex@example.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" id="input-phone" class="form-control" placeholder="+91 98765 43210">
+                </div>
+              </div>
+              <div class="grid-cols-3">
+                <div class="form-group">
+                  <label class="form-label">Address / Location</label>
+                  <input type="text" id="input-address" class="form-control" placeholder="Bengaluru, India">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">LinkedIn URL</label>
+                  <input type="url" id="input-linkedin" class="form-control" placeholder="https://linkedin.com/in/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">GitHub URL</label>
+                  <input type="url" id="input-github" class="form-control" placeholder="https://github.com/...">
+                </div>
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">📝 Professional Summary</h3>
+              </div>
+              <textarea id="input-summary" class="form-control" placeholder="Brief 2-3 sentence career narrative highlighting strengths and impact."></textarea>
+            </div>
+
+            <!-- Skills -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">💡 Technical Skills</h3>
+              </div>
+              <input type="text" id="input-skills" class="form-control" placeholder="JavaScript, TypeScript, React, Node.js, Express, PostgreSQL, Docker, AWS (comma separated)">
+            </div>
+
+            <!-- Work Experience -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">💼 Work Experience</h3>
+                <button type="button" id="btn-add-experience" class="btn btn-sm btn-outline">+ Add Experience</button>
+              </div>
+              <div id="experience-items-container"></div>
+            </div>
+
+            <!-- Projects -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">🚀 Key Projects</h3>
+                <button type="button" id="btn-add-project" class="btn btn-sm btn-outline">+ Add Project</button>
+              </div>
+              <div id="project-items-container"></div>
+            </div>
+
+            <!-- Education -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">🎓 Education</h3>
+                <button type="button" id="btn-add-education" class="btn btn-sm btn-outline">+ Add Education</button>
+              </div>
+              <div id="education-items-container"></div>
+            </div>
+          </div>
+
+          <!-- Live Preview Pane -->
+          <div class="builder-preview-pane">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-weight:700;font-size:13px;color:var(--text-muted);text-transform:uppercase;">Live Resume Preview</span>
+              <span class="badge badge-success">Auto-Synced</span>
+            </div>
+            <div id="resume-preview-document"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/resume-builder.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Upload & ATS Analysis — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Resume Upload & ATS Score</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Upload Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">📄 Upload Your Resume</h3>
+            <span class="badge badge-success">🔒 Zero Permanent Storage &bull; Instant Temporary Processing</span>
+          </div>
+
+          <div style="margin-bottom:20px;">
+            <label class="form-label" for="target-role-input">Target Technology Position for Benchmark:</label>
+            <input type="text" id="target-role-input" class="form-control" style="max-width:400px;" value="Software Engineer" placeholder="e.g. Frontend Developer, DevOps Engineer, Full Stack">
+          </div>
+
+          <!-- Drag and Drop Upload Zone -->
+          <div class="upload-zone" id="resume-drop-zone">
+            <input type="file" id="resume-file-input" accept=".pdf,.doc,.docx" style="display:none;">
+            <div class="upload-icon">📂</div>
+            <h3 style="font-size:18px;margin-bottom:6px;">Drag & Drop your Resume here</h3>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:14px;">Supports PDF, DOC, or DOCX formats (Up to 10MB)</p>
+            <button type="button" class="btn btn-secondary">Browse File</button>
+          </div>
+
+          <div id="selected-file-details" style="display:none;margin-top:16px;padding:12px;background:var(--bg-tertiary);border-radius:var(--radius-sm);">
+            <strong>Selected File:</strong> <span id="selected-file-name" style="color:var(--accent-primary);"></span>
+          </div>
+
+          <div style="margin-top:20px;text-align:right;">
+            <button id="btn-analyze-resume" class="btn btn-primary btn-lg" disabled>
+              ⚡ Analyze Resume Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Spinner -->
+        <div id="analysis-progress-container" style="display:none;text-align:center;padding:48px 24px;">
+          <div class="spinner" style="width:36px;height:36px;border-width:4px;border-top-color:var(--accent-primary);margin-bottom:16px;"></div>
+          <h3 style="font-size:18px;margin-bottom:6px;">Analyzing Your Resume...</h3>
+          <p style="color:var(--text-muted);font-size:14px;">Extracting structure, calculating deterministic ATS scores, and synthesizing Gemini AI insights.</p>
+        </div>
+
+        <!-- ATS Results Section (Hidden until analyzed or loaded) -->
+        <div id="ats-results-container" style="display:none;">
+          <!-- Score Banner -->
+          <div class="card" style="padding:32px;margin-bottom:28px;">
+            <div class="grid-cols-2" style="align-items:center;">
+              <div class="score-circle-wrapper">
+                <div class="score-circle">
+                  <div class="score-number" id="result-ats-score">0</div>
+                  <div class="score-out-of">/ 100</div>
+                </div>
+                <div style="text-align:center;">
+                  <h4 style="font-size:16px;">Overall ATS Score</h4>
+                  <span class="badge badge-primary" id="result-compatibility" style="margin-top:6px;">Compatibility Good</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="font-size:20px;margin-bottom:16px;">Score Breakdown</h3>
+                <div style="font-size:14px;line-height:2;">
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding:4px 0;">
+                    <span>Contact & Social Presence:</span>
+                    <strong id="breakdown-contact">--/15</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding:4px 0;">
+                    <span>Standard Section Hierarchy:</span>
+                    <strong id="breakdown-sections">--/25</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding:4px 0;">
+                    <span>Skill Richness & Keyword Density:</span>
+                    <strong id="breakdown-skills">--/25</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding:4px 0;">
+                    <span>Action Verbs & Content Depth:</span>
+                    <strong id="breakdown-depth">--/20</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;padding:4px 0;">
+                    <span>Formatting & Layout ATS Safety:</span>
+                    <strong id="breakdown-format">--/15</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Candidate & Summary Details -->
+          <div class="grid-cols-2" style="margin-bottom:28px;">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">👤 Candidate Information</h3>
+              </div>
+              <div style="font-size:14px;line-height:2;">
+                <div><strong>Name:</strong> <span id="result-candidate-name">--</span></div>
+                <div><strong>Email:</strong> <span id="result-candidate-email">--</span></div>
+                <div><strong>Phone:</strong> <span id="result-candidate-phone">--</span></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">📝 Professional Summary</h3>
+              </div>
+              <p id="result-summary" style="font-size:14px;color:var(--text-secondary);line-height:1.6;">--</p>
+            </div>
+          </div>
+
+          <!-- Skills Extracted -->
+          <div class="card" style="margin-bottom:28px;">
+            <div class="card-header">
+              <h3 class="card-title">💡 Technical & Soft Skills Detected</h3>
+            </div>
+            <div style="margin-bottom:14px;">
+              <h4 style="font-size:13px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Technical Skills:</h4>
+              <div id="result-tech-skills"></div>
+            </div>
+            <div>
+              <h4 style="font-size:13px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Soft Skills:</h4>
+              <div id="result-soft-skills"></div>
+            </div>
+          </div>
+
+          <!-- Strengths & Weaknesses -->
+          <div class="grid-cols-2" style="margin-bottom:28px;">
+            <div class="card" style="border-left:4px solid var(--accent-success);">
+              <div class="card-header">
+                <h3 class="card-title" style="color:var(--accent-success);">✓ Resume Strengths</h3>
+              </div>
+              <ul id="result-strengths" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.7;"></ul>
+            </div>
+
+            <div class="card" style="border-left:4px solid var(--accent-danger);">
+              <div class="card-header">
+                <h3 class="card-title" style="color:var(--accent-danger);">⚠️ Weaknesses & Gaps</h3>
+              </div>
+              <ul id="result-weaknesses" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.7;"></ul>
+            </div>
+          </div>
+
+          <!-- Missing Keywords -->
+          <div class="card" style="margin-bottom:28px;">
+            <div class="card-header">
+              <h3 class="card-title">🔍 Missing Target Role Keywords</h3>
+              <span style="font-size:13px;color:var(--text-muted);">Incorporate these into your experience or project sections</span>
+            </div>
+            <div id="result-missing-keywords"></div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="card" style="border-left:4px solid var(--accent-primary);">
+            <div class="card-header">
+              <h3 class="card-title" style="color:var(--accent-primary);">🚀 ATS Optimization Recommendations</h3>
+            </div>
+            <ul id="result-recommendations" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.8;"></ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/resume.js"></script>
+</body>
+</html>

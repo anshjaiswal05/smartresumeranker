@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recruiter Outreach Generator — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Recruiter Outreach Generator</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">🤝 Outreach Pitch Generator</h3>
+            <span class="badge badge-primary">High-Conversion Messaging</span>
+          </div>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;">
+            Craft concise, compelling networking messages designed to grab recruiter attention without sounding generic.
+          </p>
+
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="input-outreach-company">Company Name <span class="required">*</span></label>
+              <input type="text" id="input-outreach-company" class="form-control" placeholder="e.g. Flipkart, Razorpay" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-outreach-role">Job Title / Role <span class="required">*</span></label>
+              <input type="text" id="input-outreach-role" class="form-control" placeholder="e.g. SDE-2 Backend Engineer" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-outreach-recruiter">Recruiter / Hiring Manager Name <span style="font-weight:normal;color:var(--text-muted);">(Optional)</span></label>
+            <input type="text" id="input-outreach-recruiter" class="form-control" placeholder="e.g. Priya Sharma (Leave blank if unknown)">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="textarea-outreach-desc">Job Details or Specific Highlights <span style="font-weight:normal;color:var(--text-muted);">(Optional)</span></label>
+            <textarea id="textarea-outreach-desc" class="form-control" style="min-height:90px;" placeholder="Optional key requirements, tech stack, or context..."></textarea>
+          </div>
+
+          <div style="text-align:right;">
+            <button id="btn-generate-outreach" class="btn btn-primary btn-lg">
+              ⚡ Generate Outreach Messages
+            </button>
+          </div>
+        </div>
+
+        <!-- Outreach Output Section -->
+        <div id="outreach-output-section" style="display:none;">
+          <!-- 1. LinkedIn Message -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">💼</span>
+                <h3 class="card-title">LinkedIn Connection / InMail Note (Under 300 chars)</h3>
+              </div>
+              <button id="btn-copy-linkedin" class="btn btn-sm btn-outline">📋 Copy</button>
+            </div>
+            <textarea id="text-linkedin-msg" class="form-control" style="min-height:90px;font-size:14px;"></textarea>
+          </div>
+
+          <!-- 2. Cold Email -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">✉️</span>
+                <h3 class="card-title">Direct Cold Email</h3>
+              </div>
+              <button id="btn-copy-email" class="btn btn-sm btn-outline">📋 Copy</button>
+            </div>
+            <textarea id="text-cold-email" class="form-control" style="min-height:160px;font-size:14px;"></textarea>
+          </div>
+
+          <!-- 3. Short DM / Follow-up -->
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">⚡</span>
+                <h3 class="card-title">Quick DM / Follow-up Message</h3>
+              </div>
+              <button id="btn-copy-short" class="btn btn-sm btn-outline">📋 Copy</button>
+            </div>
+            <textarea id="text-short-dm" class="form-control" style="min-height:80px;font-size:14px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/recruiter.js"></script>
+</body>
+</html>

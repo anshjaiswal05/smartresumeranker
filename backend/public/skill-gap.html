@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Gap Analysis — Smart Resume Ranker</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle navigation">☰</button>
+          <h2 class="topbar-page-title">Skill Gap Analysis</h2>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-theme-toggle" id="btn-theme-toggle">🌙 <span class="toggle-text">Dark Mode</span></button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- Target Role & Skills Input Card -->
+        <div class="card" style="margin-bottom:28px;">
+          <div class="card-header">
+            <h3 class="card-title">🎯 Compare Skills Against Target Tech Roles</h3>
+            <span class="badge badge-primary">Comprehensive Roles Catalog</span>
+          </div>
+
+          <div class="grid-cols-2" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label" for="role-search-input">Search Technology Roles:</label>
+              <input type="text" id="role-search-input" class="form-control" placeholder="Search by title (e.g. Frontend, DevOps, ML, Cybersecurity)...">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="target-role-select">Select Target Position:</label>
+              <select id="target-role-select" class="form-control">
+                <option value="">Loading roles...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label class="form-label" for="user-skills-input">Your Verified Skills (Auto-populated from Resume analysis or custom input):</label>
+            <input type="text" id="user-skills-input" class="form-control" placeholder="HTML5, CSS3, JavaScript, Git, React (comma separated)">
+            <span style="font-size:12px;color:var(--text-muted);margin-top:4px;display:block;">
+              Edit skills or upload a fresh resume in the Resume section to automatically synchronize competencies.
+            </span>
+          </div>
+
+          <div style="text-align:right;">
+            <button id="btn-analyze-gap" class="btn btn-primary btn-lg">
+              🔍 Analyze Skill Gap
+            </button>
+          </div>
+        </div>
+
+        <!-- Gap Analysis Results (Hidden until run) -->
+        <div id="gap-results-container" style="display:none;">
+          <!-- Match Score Card -->
+          <div class="card" style="padding:28px;margin-bottom:24px;">
+            <div class="grid-cols-2" style="align-items:center;">
+              <div class="score-circle-wrapper">
+                <div class="score-circle" style="border-color:var(--accent-primary);">
+                  <div class="score-number" id="gap-match-percentage">0%</div>
+                  <div class="score-out-of">Role Match</div>
+                </div>
+              </div>
+              <div>
+                <span class="badge badge-primary" style="margin-bottom:8px;">Target Role</span>
+                <h2 id="gap-role-title" style="font-size:24px;margin-bottom:8px;">Software Role</h2>
+                <p id="gap-role-desc" style="color:var(--text-secondary);font-size:14px;line-height:1.5;">Role description</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills You Have -->
+          <div class="card" style="margin-bottom:24px;">
+            <div class="card-header">
+              <h3 class="card-title" style="color:var(--accent-success);">✓ Skills You Have</h3>
+              <span class="badge badge-success">Matching Role Requirements</span>
+            </div>
+            <div id="skills-you-have-list"></div>
+          </div>
+
+          <!-- Categorized Missing Skills -->
+          <div class="card" style="margin-bottom:24px;">
+            <div class="card-header">
+              <h3 class="card-title">⚠️ Prioritized Skill Gaps</h3>
+              <span style="font-size:13px;color:var(--text-muted);">Categorized by hiring manager necessity</span>
+            </div>
+
+            <!-- High Priority -->
+            <div style="margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <h4 style="font-size:14px;color:var(--accent-danger);font-weight:700;">🔥 High Priority (Mandatory Core Skills)</h4>
+              </div>
+              <div id="missing-high-priority"></div>
+            </div>
+
+            <!-- Medium Priority -->
+            <div style="margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <h4 style="font-size:14px;color:var(--accent-warning);font-weight:700;">⚡ Medium Priority (Recommended Modern Stack)</h4>
+              </div>
+              <div id="missing-medium-priority"></div>
+            </div>
+
+            <!-- Low Priority -->
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <h4 style="font-size:14px;color:var(--text-secondary);font-weight:700;">💡 Low Priority (Valuable Bonus Knowledge)</h4>
+              </div>
+              <div id="missing-low-priority"></div>
+            </div>
+          </div>
+
+          <!-- Recommendations & Next Steps -->
+          <div class="card" style="border-left:4px solid var(--accent-primary);">
+            <div class="card-header">
+              <h3 class="card-title" style="color:var(--accent-primary);">🚀 Strategic Learning Advice</h3>
+            </div>
+            <ul id="gap-recommendations-list" style="padding-left:20px;font-size:14px;color:var(--text-secondary);line-height:1.8;"></ul>
+            <div style="margin-top:16px;">
+              <a href="roadmap.html" class="btn btn-outline">Explore Learning Roadmaps ➔</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/skill-gap.js"></script>
+</body>
+</html>
